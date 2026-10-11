@@ -17,7 +17,7 @@ public class Order {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	Integer order_id;
 	Integer orderNumber;
-	Integer productName;
+	String productName;
 	Double quantity;
 	Double weight;
 	String pickupAddress;
@@ -36,10 +36,10 @@ public class Order {
 	public void setOrderNumber(Integer orderNumber) {
 		this.orderNumber = orderNumber;
 	}
-	public Integer getProductName() {
+	public String getProductName() {
 		return productName;
 	}
-	public void setProductName(Integer productName) {
+	public void setProductName(String productName) {
 		this.productName = productName;
 	}
 	public Double getQuantity() {

@@ -2,7 +2,9 @@ package com.restAPI.rsm_pack_and_drop.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,41 +14,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restAPI.rsm_pack_and_drop.model.Order;
-import com.restAPI.rsm_pack_and_drop.repo.OrderRepo;
-
+import com.restAPI.rsm_pack_and_drop.service.OrderService;
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class OrderController {
 	@Autowired
-	OrderRepo orderRepo;
+	OrderService orderService;
 	
 	@GetMapping("/getOrderDetails")
-	List<Order>getOrderDetails(){
-		return orderRepo.findAll();	
+	public List<Order>getOrderDetails(){
+		return orderService.getOrderDetails();
 	}
 	@GetMapping("/getOrderDetails/{order_id}")
-	Order getOrder(@PathVariable Integer order_id) {
-		return orderRepo.findById(order_id).orElseThrow();
+	public Order getOrder(@PathVariable Integer order_id) {
+		return orderService.getOrder(order_id);
 	}
 	@PostMapping("/createOrders")
-	Order createOrders(@RequestBody Order order) {
-		return orderRepo.save(order);
+	public Order createOrders(@RequestBody Order order) {
+		return orderService.createOrders(order);
 	}
 	@DeleteMapping("/deleteOrder/{order_id}")
-	String deleteOrder(@PathVariable Integer order_id) {
-		orderRepo.deleteById(order_id);
-		return "Order of id number "+order_id+" deleted successfully";
+	public String deleteOrder(@PathVariable Integer order_id) {
+		return orderService.deleteOrder(order_id);
 	}
 	@PutMapping("/updateOrder/{order_id}")
-	Order updateOrder(@RequestBody Order order,@PathVariable Integer order_id) {
-		Order OFDb=getOrder(order_id);
-		OFDb.setOrderNumber(order.getOrderNumber());
-		OFDb.setProductName(order.getProductName());
-		OFDb.setQuantity(order.getQuantity());
-		OFDb.setWeight(order.getWeight());
-		OFDb.setPickupAddress(order.getPickupAddress());
-		OFDb.setDeliveryAddress(order.getDeliveryAddress());
-		OFDb.setOrderDate(order.getOrderDate());
-		OFDb.setStatus(order.getStatus());
-		return orderRepo.save(OFDb);
+	public Order updateOrder(@RequestBody Order order,@PathVariable Integer order_id) {
+		return orderService.updateOrder(order, order_id);
 	}
 }
